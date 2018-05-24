@@ -13,7 +13,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".SignUpActivity"
+            android:name=".LoginActivity"
             android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -32,7 +32,8 @@
             android:name="com.parse.CLIENT_KEY"
             android:value="@string/b4clientKey" />
 
-        <activity android:name=".LoginActivity"></activity>
+        <activity android:name=".SignUpActivity" />
+        <activity android:name=".ListPendingPiecesActivity"></activity>
     </application>
 
 </manifest>
