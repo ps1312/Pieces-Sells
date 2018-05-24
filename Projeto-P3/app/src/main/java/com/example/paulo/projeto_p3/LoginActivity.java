@@ -1,5 +1,6 @@
 package com.example.paulo.projeto_p3;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -19,6 +20,7 @@ public class LoginActivity extends AppCompatActivity {
     private EditText loginInput;
     private EditText passwordInput;
     private Button loginButton;
+    private Button registerActivityButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,19 +36,32 @@ public class LoginActivity extends AppCompatActivity {
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.i(TAG, "LOGGIN USER..");
-                //TODO checar se inputs estao vazios
-                ParseUser.logInInBackground(String.valueOf(loginInput.getText()), String.valueOf(passwordInput.getText()), new LogInCallback() {
-                    @Override
-                    public void done(ParseUser user, ParseException e) {
-                        if (user != null) {
-                            Toast.makeText(getApplicationContext(), "Logged in with success", Toast.LENGTH_SHORT).show();
-                        } else {
-                            Log.i(TAG, "Error login user");
-                            ParseUser.logOut();
-                        }
-                    }
-                });
+//                Log.i(TAG, "LOGGIN USER..");
+//                //TODO checar se inputs estao vazios
+//                ParseUser.logInInBackground(String.valueOf(loginInput.getText()), String.valueOf(passwordInput.getText()), new LogInCallback() {
+//                    @Override
+//                    public void done(ParseUser user, ParseException e) {
+//                        if (user != null) {
+//                            Toast.makeText(getApplicationContext(), "Logged in with success", Toast.LENGTH_SHORT).show();
+//                        } else {
+//                            Log.i(TAG, "Error login user");
+//                            ParseUser.logOut();
+//                        }
+//                    }
+//                });
+
+                Intent listPiecesIntent = new Intent(getApplicationContext(), ListPendingPiecesActivity.class);
+                startActivity(listPiecesIntent);
+            }
+        });
+
+        registerActivityButton = findViewById(R.id.register_activity_button);
+
+        registerActivityButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent signUpActivity = new Intent(getApplicationContext(), SignUpActivity.class);
+                startActivity(signUpActivity);
             }
         });
     }

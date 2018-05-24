@@ -15,17 +15,17 @@ import com.parse.SignUpCallback;
 
 
 public class SignUpActivity extends AppCompatActivity {
+
     public String TAG = "ERROR_________";
     private EditText loginInput;
     private EditText passwordInput;
     private EditText confirmPassInput;
     private Button registerButton;
-    private Button loginActivityButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_sign_in);
 
         Parse.initialize(this);
 
@@ -54,16 +54,5 @@ public class SignUpActivity extends AppCompatActivity {
                 });
             }
         });
-
-        loginActivityButton = findViewById(R.id.login_activity_button);
-
-        loginActivityButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent loginActivity = new Intent(getApplicationContext(), LoginActivity.class);
-                startActivity(loginActivity);
-            }
-        });
-
     }
 }
