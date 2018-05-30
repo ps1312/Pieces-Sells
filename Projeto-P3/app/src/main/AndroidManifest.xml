@@ -33,7 +33,8 @@
             android:value="@string/b4clientKey" />
 
         <activity android:name=".SignUpActivity" />
-        <activity android:name=".ListPendingPiecesActivity"></activity>
+        <activity android:name=".ListPendingPiecesActivity" />
+        <activity android:name=".ShowPieceActivity"></activity>
     </application>
 
 </manifest>

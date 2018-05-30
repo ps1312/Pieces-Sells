@@ -1,6 +1,7 @@
 package com.example.paulo.projeto_p3;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -14,9 +15,9 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.itemLi
 
 
     private Context c;
-    private List<itemList> mockData;
+    private List<ItemList> mockData;
 
-    public RecyclerAdapter(Context c, List<itemList> mockData){
+    public RecyclerAdapter(Context c, List<ItemList> mockData){
         this.c = c;
         this.mockData = mockData;
     }
@@ -42,7 +43,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.itemLi
     }
 
 
-    class itemListHolder extends RecyclerView.ViewHolder {
+    class itemListHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         TextView itemNome;
         TextView itemDesc;
@@ -53,6 +54,18 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.itemLi
             this.itemNome = itemView.findViewById(R.id.itemNome);
             this.itemDesc = itemView.findViewById(R.id.itemDesc);
             this.itemQuantity = itemView.findViewById(R.id.itemQuantity);
+            itemView.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View v) {
+            ItemList item = mockData.get(getAdapterPosition());
+            Intent showPieceIntent = new Intent(c, ShowPieceActivity.class);
+            showPieceIntent.putExtra("itemNome", item.getItemName());
+            showPieceIntent.putExtra("itemDesc", item.getDescription());
+            showPieceIntent.putExtra("itemQuantity", String.valueOf(item.getQuantity()));
+            showPieceIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            c.startActivity(showPieceIntent);
         }
     }
 }

@@ -1,13 +1,13 @@
 package com.example.paulo.projeto_p3;
 
-public class itemList {
+public class ItemList {
 
     private String itemName;
     private String description;
     private Integer quantity;
 
 
-    public itemList(String name, String description, Integer quantity){
+    public ItemList(String name, String description, Integer quantity){
         this.itemName = name;
         this.description = description;
         this.quantity = quantity;
