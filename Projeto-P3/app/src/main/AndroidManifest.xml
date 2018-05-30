@@ -34,7 +34,8 @@
 
         <activity android:name=".SignUpActivity" />
         <activity android:name=".ListPendingPiecesActivity" />
-        <activity android:name=".ShowPieceActivity"></activity>
+        <activity android:name=".ShowPieceActivity" />
+        <activity android:name=".AddItemActivity"></activity>
     </application>
 
 </manifest>
