@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <PreferenceCategory android:title="GERAL">
+        <ListPreference
+            android:defaultValue="@string/default_reload_time"
+            android:title="Tempo de recarregamento"
+            android:key="rssrefreshtime"
+            android:entries="@array/reload_time"
+            android:entryValues="@array/reload_time"
+            />
+    </PreferenceCategory>
+</PreferenceScreen>

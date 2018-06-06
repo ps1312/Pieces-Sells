@@ -3,4 +3,12 @@
 
     <string name="back4app_server_url">https://parseapi.back4app.com/</string>
 
+    <string name="default_reload_time">30 min</string>
+
+    <string-array name="reload_time">
+        <item>15 min</item>
+        <item>30 min</item>
+        <item>45 min</item>
+    </string-array>
+
 </resources>

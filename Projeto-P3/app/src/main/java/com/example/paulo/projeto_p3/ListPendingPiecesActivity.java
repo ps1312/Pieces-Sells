@@ -54,6 +54,10 @@ public class ListPendingPiecesActivity extends AppCompatActivity {
                 //para o comportamento mock usa-se o startActivityForResult
                 startActivityForResult(new Intent(getApplicationContext(), AddItemActivity.class), 1);
                 return true;
+
+            case R.id.btn_config:
+                startActivity(new Intent(getApplicationContext(), ConfigActivity.class));
+                return true;
         }
         return super.onOptionsItemSelected(item);
     }
