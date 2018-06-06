@@ -47,6 +47,14 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/piece_status_tv"
+        android:text="Em falta"
+        />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Adquirido"
+        android:id="@+id/status_button"
         />
 
 </LinearLayout>
