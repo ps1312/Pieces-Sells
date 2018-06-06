@@ -10,6 +10,7 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -69,6 +70,8 @@ public class ListPendingPiecesActivity extends AppCompatActivity {
             if (resultCode == RESULT_OK) {
                 mockData.add(new ItemList(data.getStringExtra("itemNome"), data.getStringExtra("itemDesc"), Integer.parseInt(data.getStringExtra("itemQuantity"))));
                 recyclerAdapter.notifyItemInserted(mockData.size() - 1);
+            } else {
+                Toast.makeText(getApplicationContext(), "Por favor, preencha todos os campos", Toast.LENGTH_SHORT).show();
             }
         }
     }
