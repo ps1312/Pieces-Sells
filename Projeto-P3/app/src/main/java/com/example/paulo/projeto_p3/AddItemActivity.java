@@ -7,6 +7,12 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
+
+import com.parse.ParseException;
+import com.parse.ParseObject;
+import com.parse.ParseUser;
+import com.parse.SaveCallback;
 
 public class AddItemActivity extends AppCompatActivity {
 
@@ -25,6 +31,8 @@ public class AddItemActivity extends AppCompatActivity {
         itemQuantityEt = findViewById(R.id.piece_quantity_et);
         addPieceButton = findViewById(R.id.add_piece_button);
 
+        final ParseUser currentUser = ParseUser.getCurrentUser();
+
         addPieceButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -32,17 +40,25 @@ public class AddItemActivity extends AppCompatActivity {
                 String itemDesc = String.valueOf(itemDescEt.getText());
                 String itemQuantity = String.valueOf(itemQuantityEt.getText());
 
-                Intent newItemPieceData = new Intent();
-
-                if (itemNome.equals("") || itemDesc.equals("")) {
-                    setResult(RESULT_CANCELED, newItemPieceData);
+                if (itemNome.equals("") || itemDesc.equals("") || itemQuantity.isEmpty()) {
+                    Toast.makeText(getApplicationContext(), "Por favor, preencha todos os dados", Toast.LENGTH_SHORT).show();
                 } else {
-                    newItemPieceData.putExtra("itemNome", itemNome);
-                    newItemPieceData.putExtra("itemDesc", itemDesc);
-                    newItemPieceData.putExtra("itemQuantity", itemQuantity);
-                    setResult(RESULT_OK, newItemPieceData);
+                    //Adicionar no servidor
+                    ParseObject piece = new ParseObject("Produto");
+                    piece.put("name", itemNome);
+                    piece.put("description", itemDesc);
+                    piece.put("quantity", itemQuantity);
+                    piece.put("status", false);
+                    piece.put("user", currentUser);
+                    piece.saveInBackground(new SaveCallback() {
+                        @Override
+                        public void done(ParseException e) {
+                            if (e != null) {
+                                e.printStackTrace();
+                            }
+                        }
+                    });
                 }
-                finish();
             }
         });
     }

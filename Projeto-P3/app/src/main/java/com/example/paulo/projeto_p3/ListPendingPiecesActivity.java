@@ -12,6 +12,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import com.parse.ParseUser;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -40,6 +42,8 @@ public class ListPendingPiecesActivity extends AppCompatActivity {
         pendingPiecesRV.setItemAnimator(new DefaultItemAnimator());
         recyclerAdapter = new RecyclerAdapter(getApplicationContext(), mockData);
         pendingPiecesRV.setAdapter(recyclerAdapter);
+
+        ParseUser currentUser = ParseUser.getCurrentUser();
     }
 
     @Override
@@ -52,8 +56,7 @@ public class ListPendingPiecesActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.btn_add:
-                //para o comportamento mock usa-se o startActivityForResult
-                startActivityForResult(new Intent(getApplicationContext(), AddItemActivity.class), 1);
+                startActivity(new Intent(getApplicationContext(), AddItemActivity.class));
                 return true;
 
             case R.id.btn_config:
@@ -61,18 +64,5 @@ public class ListPendingPiecesActivity extends AppCompatActivity {
                 return true;
         }
         return super.onOptionsItemSelected(item);
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == 1) {
-            if (resultCode == RESULT_OK) {
-                mockData.add(new ItemList(data.getStringExtra("itemNome"), data.getStringExtra("itemDesc"), Integer.parseInt(data.getStringExtra("itemQuantity"))));
-                recyclerAdapter.notifyItemInserted(mockData.size() - 1);
-            } else {
-                Toast.makeText(getApplicationContext(), "Por favor, preencha todos os campos", Toast.LENGTH_SHORT).show();
-            }
-        }
     }
 }
