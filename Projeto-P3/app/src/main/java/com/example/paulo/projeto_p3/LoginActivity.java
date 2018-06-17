@@ -9,10 +9,15 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.parse.FindCallback;
 import com.parse.LogInCallback;
 import com.parse.Parse;
 import com.parse.ParseException;
+import com.parse.ParseObject;
+import com.parse.ParseQuery;
 import com.parse.ParseUser;
+
+import java.util.List;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -36,22 +41,21 @@ public class LoginActivity extends AppCompatActivity {
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                Log.i(TAG, "LOGGIN USER..");
-//                //TODO checar se inputs estao vazios
-//                ParseUser.logInInBackground(String.valueOf(loginInput.getText()), String.valueOf(passwordInput.getText()), new LogInCallback() {
-//                    @Override
-//                    public void done(ParseUser user, ParseException e) {
-//                        if (user != null) {
-//                            Toast.makeText(getApplicationContext(), "Logged in with success", Toast.LENGTH_SHORT).show();
-//                        } else {
-//                            Log.i(TAG, "Error login user");
-//                            ParseUser.logOut();
-//                        }
-//                    }
-//                });
-
-                Intent listPiecesIntent = new Intent(getApplicationContext(), ListPendingPiecesActivity.class);
-                startActivity(listPiecesIntent);
+                Log.i(TAG, "LOGGIN USER..");
+                //TODO checar se inputs estao vazios
+                ParseUser.logInInBackground(String.valueOf(loginInput.getText()), String.valueOf(passwordInput.getText()), new LogInCallback() {
+                    @Override
+                    public void done(ParseUser user, ParseException e) {
+                        if (user != null) {
+                            Toast.makeText(getApplicationContext(), "Bem vindo, " + user.getUsername() + ".", Toast.LENGTH_SHORT).show();
+                            Intent listPiecesIntent = new Intent(getApplicationContext(), ListPendingPiecesActivity.class);
+                            startActivity(listPiecesIntent);
+                        } else {
+                            Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+                            ParseUser.logOut();
+                        }
+                    }
+                });
             }
         });
 

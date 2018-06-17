@@ -8,6 +8,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.parse.LogInCallback;
 import com.parse.Parse;
 import com.parse.ParseException;
 import com.parse.ParseUser;
@@ -38,14 +39,21 @@ public class SignUpActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 //TODO Checar se as credenciais estao vazias e se as senhas dao match
-                ParseUser user = new ParseUser();
+                final ParseUser user = new ParseUser();
                 user.setUsername(String.valueOf(loginInput.getText()));
                 user.setPassword(String.valueOf(passwordInput.getText()));
                 user.signUpInBackground(new SignUpCallback() {
                     @Override
                     public void done(ParseException e) {
                         if (e == null){
-                            Toast.makeText(getApplicationContext(), "User created with success, welcome.", Toast.LENGTH_SHORT).show();
+                            ParseUser.logInInBackground(user.getUsername(), String.valueOf(passwordInput.getText()), new LogInCallback() {
+                                @Override
+                                public void done(ParseUser user, ParseException e) {
+                                    Toast.makeText(getApplicationContext(), user.getUsername() + " criado e logado com sucesso.", Toast.LENGTH_SHORT).show();
+                                    Intent listPiecesIntent = new Intent(getApplicationContext(), ListPendingPiecesActivity.class);
+                                    startActivity(listPiecesIntent);
+                                }
+                            });
                         } else {
                             e.printStackTrace();
                             ParseUser.logOut();
