@@ -22,7 +22,7 @@
             </intent-filter>
         </activity>
 
-        <service android:name=".DownloadJSONService"
+        <service android:name=".DownloadDataFromServer"
             android:enabled="true"
             />
 

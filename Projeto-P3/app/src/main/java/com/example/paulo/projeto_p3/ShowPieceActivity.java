@@ -8,41 +8,77 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.example.paulo.projeto_p3.db.SQLitePiecesHelper;
+import com.parse.GetCallback;
+import com.parse.ParseException;
+import com.parse.ParseObject;
+import com.parse.ParseQuery;
+
 public class ShowPieceActivity extends AppCompatActivity {
 
     private TextView itemNameTv;
     private TextView itemDescTv;
     private TextView itemQuantityTv;
-    private TextView pieceStatusTv;
+    private TextView itemStatusTv;
+    private TextView itemCreatedByTv;
     private Button buyButton;
+
+    private SQLitePiecesHelper db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_show_piece);
 
+        db = SQLitePiecesHelper.getInstance(getApplicationContext());
+
         Intent intent = getIntent();
         String itemNome = intent.getStringExtra("itemNome");
         String itemDesc = intent.getStringExtra("itemDesc");
         String itemQuantity = intent.getStringExtra("itemQuantity");
+        String createdBy = intent.getStringExtra("createdBy");
+        String status = intent.getStringExtra("status");
+        final String id = intent.getStringExtra("id");
 
         itemNameTv = findViewById(R.id.piece_name_tv);
         itemDescTv = findViewById(R.id.piece_desc_tv);
         itemQuantityTv = findViewById(R.id.piece_quantity_tv);
-        pieceStatusTv = findViewById(R.id.piece_status_tv);
+        itemStatusTv = findViewById(R.id.piece_status_tv);
+        itemCreatedByTv = findViewById(R.id.piece_createdBy_tv);
         buyButton = findViewById(R.id.status_button);
 
         itemNameTv.setText(itemNome);
         itemDescTv.setText(itemDesc);
         itemQuantityTv.setText(itemQuantity);
+        itemCreatedByTv.setText(createdBy);
 
+        //Item ainda não foi adquirido
+        if (status.equals("0")) {
+            itemStatusTv.setText("Em falta");
+            buyButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    itemStatusTv.setText("Comprado");
+                    db.markAsBought(id);
 
-        buyButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                pieceStatusTv.setText("Comprado");
-                buyButton.setEnabled(false);
-            }
-        });
+                    ParseQuery<ParseObject> query = ParseQuery.getQuery("Produto");
+
+                    // encontrar pelo id e marcar status como 1 (comprado)
+                    query.getInBackground(id, new GetCallback<ParseObject>() {
+                        public void done(ParseObject gameScore, ParseException e) {
+                            if (e == null) {
+                                gameScore.put("status", 1);
+                                gameScore.saveInBackground();
+                            } else {
+                                e.printStackTrace();
+                            }
+                        }
+                    });
+                }
+            });
+        } else {
+            itemStatusTv.setText("Comprado");
+            buyButton.setEnabled(false);
+        }
     }
 }
