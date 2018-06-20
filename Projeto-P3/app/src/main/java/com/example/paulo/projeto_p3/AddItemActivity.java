@@ -14,6 +14,8 @@ import com.parse.ParseObject;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
+import java.util.List;
+
 public class AddItemActivity extends AppCompatActivity {
 
     private EditText itemNomeEt;
@@ -47,14 +49,16 @@ public class AddItemActivity extends AppCompatActivity {
                     ParseObject piece = new ParseObject("Produto");
                     piece.put("name", itemNome);
                     piece.put("description", itemDesc);
-                    piece.put("quantity", itemQuantity);
-                    piece.put("status", false);
+                    piece.put("quantity", Integer.valueOf(itemQuantity));
+                    piece.put("status", 0);
                     piece.put("user", currentUser);
                     piece.saveInBackground(new SaveCallback() {
                         @Override
                         public void done(ParseException e) {
                             if (e != null) {
                                 e.printStackTrace();
+                            } else {
+                                startActivity(new Intent(getApplicationContext(), ListPendingPiecesActivity.class));
                             }
                         }
                     });

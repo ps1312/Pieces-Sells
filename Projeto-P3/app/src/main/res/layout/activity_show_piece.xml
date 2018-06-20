@@ -47,7 +47,17 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/piece_status_tv"
-        android:text="Em falta"
+        />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Criado por:"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/piece_createdBy_tv"
         />
 
     <Button
