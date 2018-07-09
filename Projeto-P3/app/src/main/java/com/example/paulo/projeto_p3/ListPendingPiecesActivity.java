@@ -1,11 +1,16 @@
 package com.example.paulo.projeto_p3;
 
+import android.app.job.JobInfo;
+import android.app.job.JobScheduler;
 import android.content.BroadcastReceiver;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.os.AsyncTask;
+import android.preference.PreferenceManager;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -13,11 +18,13 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.example.paulo.projeto_p3.db.SQLitePiecesHelper;
+import com.parse.Parse;
 import com.parse.ParseUser;
 
 
@@ -29,6 +36,8 @@ public class ListPendingPiecesActivity extends AppCompatActivity {
 
     private SQLitePiecesHelper db;
 
+    private JobScheduler jobScheduler;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +46,8 @@ public class ListPendingPiecesActivity extends AppCompatActivity {
 
         db = SQLitePiecesHelper.getInstance(this);
 
+        jobScheduler = (JobScheduler) getSystemService(JOB_SCHEDULER_SERVICE);
+
         //Aplicando funcionalidades na RecyclerView
         pendingPiecesRV = findViewById(R.id.pending_pieces_rv);
         pendingPiecesRV.setLayoutManager(new LinearLayoutManager(this));
@@ -44,6 +55,7 @@ public class ListPendingPiecesActivity extends AppCompatActivity {
         pendingPiecesRV.setItemAnimator(new DefaultItemAnimator());
         pendingPiecesRV.setAdapter(recyclerAdapter);
 
+        Parse.initialize(this);
         ParseUser currentUser = ParseUser.getCurrentUser();
     }
 
@@ -110,4 +122,27 @@ public class ListPendingPiecesActivity extends AppCompatActivity {
             }
         }
     }
+
+    private static final int JOB_ID = 1;
+
+    private void agendarJob() {
+        Log.d("JOB SCHEDULER", "Agendando job scheduler");
+        JobInfo.Builder jobBuilder = new JobInfo.Builder(JOB_ID, new ComponentName(this, JobDownloadService.class));
+
+        //Conexao com internet necessaria
+        jobBuilder.setRequiredNetworkType(JobInfo.NETWORK_TYPE_ANY);
+
+        //Realizar o download a cada n segundos de acordo com o shared prefs
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        String timePeriodString = preferences.getString("reload_time", "15");
+        String[] timeNumber = timePeriodString.split(" ");
+        if (timePeriodString.contains("h")) {
+            jobBuilder.setPeriodic((Integer.valueOf(timeNumber[0]) * 60) * 60000);
+        } else {
+            jobBuilder.setPeriodic(Integer.valueOf(timeNumber[0]) * 60000);
+        }
+
+        jobScheduler.schedule(jobBuilder.build());
+    }
 }
+
