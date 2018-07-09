@@ -19,6 +19,8 @@ public class DownloadDataFromServer extends IntentService {
 
     public static final String DOWNLOAD_COMPLETE =  "com.example.paulo.projeto_p3.DOWNLOAD_COMPLETE";
 
+    public static final String NEW_REPORT_AVAILABLE = "com.example.paulo.projeto_p3.DOWNLOAD_COMPLETE";
+
     public DownloadDataFromServer() {
         super("DownloadDataFromServer");
     }
@@ -32,6 +34,8 @@ public class DownloadDataFromServer extends IntentService {
 
         final ParseUser currentUser = ParseUser.getCurrentUser();
 
+        sendBroadcast(new Intent(NEW_REPORT_AVAILABLE));
+
         ParseQuery<ParseObject> request = ParseQuery.getQuery("Produto");
         request.findInBackground(new FindCallback<ParseObject>() {
             @Override
@@ -43,7 +47,7 @@ public class DownloadDataFromServer extends IntentService {
                     for (ParseObject piece : objects) {
                         ItemList item = db.getItem(piece.getObjectId());
 
-                        //Produto nao existe no banco, partiu adicionar
+                        //Produto nao existe no banco, partiu adicionar e enviar notificacao se houver peças novas
                         if (item == null) {
                             item = new ItemList(piece.getString("name"), piece.getObjectId(), piece.getString("description"), piece.getInt("quantity"), piece.getInt("status"));
                             db.insertPiece(item, currentUser.getUsername());

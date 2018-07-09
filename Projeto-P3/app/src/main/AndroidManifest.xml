@@ -12,20 +12,34 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+
         <activity
             android:name=".LoginActivity"
             android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".SignUpActivity" />
+        <activity android:name=".ListPendingPiecesActivity" />
+        <activity android:name=".ShowPieceActivity" />
+        <activity android:name=".AddItemActivity" />
+        <activity android:name=".ConfigActivity" />
 
         <service android:name=".DownloadDataFromServer"
-            android:enabled="true"
-            />
+            android:enabled="true" />
 
+        <receiver
+            android:name=".NewPieceReceiver"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="com.example.paulo.projeto_p3.DOWNLOAD_COMPLETE" />
+            </intent-filter>
+        </receiver>
+
+        <!--Variaveis de ambiente para conectar com o ParseServer-->
         <meta-data
             android:name="com.parse.SERVER_URL"
             android:value="@string/back4app_server_url" />
@@ -35,12 +49,6 @@
         <meta-data
             android:name="com.parse.CLIENT_KEY"
             android:value="@string/b4clientKey" />
-
-        <activity android:name=".SignUpActivity" />
-        <activity android:name=".ListPendingPiecesActivity" />
-        <activity android:name=".ShowPieceActivity" />
-        <activity android:name=".AddItemActivity" />
-        <activity android:name=".ConfigActivity"></activity>
     </application>
 
 </manifest>
