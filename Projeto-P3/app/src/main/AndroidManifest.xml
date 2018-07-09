@@ -13,7 +13,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".ListPendingPiecesActivity"
+            android:name=".MainActivity"
             android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -46,15 +46,16 @@
         <!-- Variaveis de ambiente para conectar com o ParseServer -->
         <meta-data
             android:name="com.parse.SERVER_URL"
-            android:value="@string/back4app_server_url" />
+            android:value="https://parseapi.back4app.com" />
         <meta-data
             android:name="com.parse.APPLICATION_ID"
-            android:value="@string/b4appID" />
+            android:value="N9slm42GZNB6G6BFzRIhOG04OWNNW5nuFTxQwPW0" />
         <meta-data
             android:name="com.parse.CLIENT_KEY"
-            android:value="@string/b4clientKey" />
+            android:value="EhqDcBMxIy3VVd8KOqim5QwPj0TZ6q6vpHgPGTyw" />
 
-        <activity android:name=".HistoricActivity"></activity>
+        <activity android:name=".HistoricActivity" />
+        <activity android:name=".ListPendingPiecesActivity"></activity>
     </application>
 
 </manifest>

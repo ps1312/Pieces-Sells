@@ -27,6 +27,8 @@ import com.example.paulo.projeto_p3.db.SQLitePiecesHelper;
 import com.parse.Parse;
 import com.parse.ParseUser;
 
+import java.util.List;
+
 import static android.content.Intent.FLAG_ACTIVITY_CLEAR_TOP;
 
 
@@ -113,7 +115,7 @@ public class ListPendingPiecesActivity extends AppCompatActivity {
 
             case R.id.btn_logout:
                 currentUser.logOutInBackground();
-                startActivity(new Intent(getApplicationContext(), LoginActivity.class));
+                startActivity(new Intent(getApplicationContext(), MainActivity.class).addFlags(FLAG_ACTIVITY_CLEAR_TOP));
                 return true;
         }
         return super.onOptionsItemSelected(item);

@@ -11,16 +11,9 @@ android {
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
-        debug {
-            resValue "string", "b4appID", Back4AppAppID
-            resValue "string", "b4clientKey", Back4AppClientKey
-        }
-
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-            resValue "string", "b4appID", Back4AppAppID
-            resValue "string", "b4clientKey", Back4AppClientKey
         }
     }
 }

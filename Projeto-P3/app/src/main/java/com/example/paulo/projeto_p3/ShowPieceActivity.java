@@ -57,17 +57,20 @@ public class ShowPieceActivity extends AppCompatActivity {
         //Item ainda não foi adquirido
         if (status.equals("0")) {
             itemStatusTv.setText("Em falta");
+            buyButton.setText("Adquirir");
         } else {
             itemStatusTv.setText("Comprado");
             buyButton.setEnabled(false);
         }
 
-        //Somente usuario com role de "admin" pode adquirir as peças
-        if (ParseUser.getCurrentUser().get("admin").equals(true)) {
+        //Somente usuario com role de "admin" pode adquirir as peçasLoginActivity
+        if (ParseUser.getCurrentUser().getUsername().equals("admin")) {
             buyButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     itemStatusTv.setText("Comprado");
+                    buyButton.setText("Adquirido");
+                    buyButton.setEnabled(false);
                     db.updateItem(id, 1);
                     ParseQuery<ParseObject> query = ParseQuery.getQuery("Produto");
                     // encontrar pelo id e marcar status como 1 (comprado)

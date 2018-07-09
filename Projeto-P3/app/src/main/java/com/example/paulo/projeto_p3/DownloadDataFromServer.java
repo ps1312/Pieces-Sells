@@ -35,9 +35,10 @@ public class DownloadDataFromServer extends IntentService {
     protected void onHandleIntent(@Nullable final Intent intent) {
         db = SQLitePiecesHelper.getInstance(getApplicationContext());
 
+        Log.d("AAAAAAAAAAAAAa", "XXXXXXXXXXXXXXXXX");
+
         Parse.initialize(getApplicationContext());
         final ParseUser currentUser = ParseUser.getCurrentUser();
-
         ParseQuery<ParseObject> request = ParseQuery.getQuery("Produto");
         request.findInBackground(new FindCallback<ParseObject>() {
             @Override
@@ -53,7 +54,9 @@ public class DownloadDataFromServer extends IntentService {
                         if (item == null) {
                             newPieces = true;
                             item = new ItemList(piece.getString("name"), piece.getObjectId(), piece.getString("description"), piece.getInt("quantity"), piece.getInt("status"));
-                            db.insertPiece(item, currentUser.getUsername());
+                            if (currentUser != null){
+                                db.insertPiece(item, currentUser.getUsername());
+                            }
                         } else {
 
                             //se existe, atualizar status de acordo com o servidor
