@@ -38,7 +38,6 @@ public class SignUpActivity extends AppCompatActivity {
         registerButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //TODO Checar se as credenciais estao vazias e se as senhas dao match
                 final ParseUser user = new ParseUser();
                 user.setUsername(String.valueOf(loginInput.getText()));
                 user.setPassword(String.valueOf(passwordInput.getText()));

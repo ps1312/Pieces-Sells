@@ -41,8 +41,6 @@ public class LoginActivity extends AppCompatActivity {
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.i(TAG, "LOGGIN USER..");
-                //TODO checar se inputs estao vazios
                 ParseUser.logInInBackground(String.valueOf(loginInput.getText()), String.valueOf(passwordInput.getText()), new LogInCallback() {
                     @Override
                     public void done(ParseUser user, ParseException e) {

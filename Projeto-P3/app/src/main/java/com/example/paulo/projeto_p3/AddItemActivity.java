@@ -22,6 +22,10 @@ public class AddItemActivity extends AppCompatActivity {
     private EditText itemDescEt;
     private EditText itemQuantityEt;
     private Button addPieceButton;
+    private Button notificacao;
+
+    public static final String NEW_PIECE_AVAILABLE = "com.example.paulo.projeto_p3.NEW_PIECE_AVAILABLE";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,6 +36,14 @@ public class AddItemActivity extends AppCompatActivity {
         itemDescEt = findViewById(R.id.piece_desc_et);
         itemQuantityEt = findViewById(R.id.piece_quantity_et);
         addPieceButton = findViewById(R.id.add_piece_button);
+        notificacao = findViewById(R.id.notificacao_button);
+
+        notificacao.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                sendBroadcast(new Intent(NEW_PIECE_AVAILABLE));
+            }
+        });
 
         final ParseUser currentUser = ParseUser.getCurrentUser();
 

@@ -27,6 +27,8 @@ import com.example.paulo.projeto_p3.db.SQLitePiecesHelper;
 import com.parse.Parse;
 import com.parse.ParseUser;
 
+import static android.content.Intent.FLAG_ACTIVITY_CLEAR_TOP;
+
 
 public class ListPendingPiecesActivity extends AppCompatActivity {
 
@@ -38,6 +40,7 @@ public class ListPendingPiecesActivity extends AppCompatActivity {
 
     private JobScheduler jobScheduler;
 
+    private ParseUser currentUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,18 +56,22 @@ public class ListPendingPiecesActivity extends AppCompatActivity {
         pendingPiecesRV.setLayoutManager(new LinearLayoutManager(this));
         pendingPiecesRV.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
         pendingPiecesRV.setItemAnimator(new DefaultItemAnimator());
-        pendingPiecesRV.setAdapter(recyclerAdapter);
 
         Parse.initialize(this);
-        ParseUser currentUser = ParseUser.getCurrentUser();
+        //Criar intent para iniciar o servico de download do feed
+        currentUser = ParseUser.getCurrentUser();
+        if (currentUser == null) {
+            startActivity(new Intent(getApplicationContext(), LoginActivity.class).addFlags(FLAG_ACTIVITY_CLEAR_TOP));
+        }
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-        //Criar intent para iniciar o servico de download do feed
         Intent downloadService = new Intent(getApplicationContext(), DownloadDataFromServer.class);
         startService(downloadService);
+
+        agendarJob();
     }
 
     @Override
@@ -79,7 +86,6 @@ public class ListPendingPiecesActivity extends AppCompatActivity {
     private BroadcastReceiver onDownloadCompleteEvent = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            Toast.makeText(getApplicationContext(), "Pecas carregadas, exibindo a lista.", Toast.LENGTH_LONG).show();
             new CarregarListaPecas().execute();
         }
     };
@@ -100,6 +106,15 @@ public class ListPendingPiecesActivity extends AppCompatActivity {
             case R.id.btn_config:
                 startActivity(new Intent(getApplicationContext(), ConfigActivity.class));
                 return true;
+
+            case R.id.btn_historic:
+                startActivity(new Intent(getApplicationContext(), HistoricActivity.class));
+                return true;
+
+            case R.id.btn_logout:
+                currentUser.logOutInBackground();
+                startActivity(new Intent(getApplicationContext(), LoginActivity.class));
+                return true;
         }
         return super.onOptionsItemSelected(item);
     }
@@ -119,6 +134,7 @@ public class ListPendingPiecesActivity extends AppCompatActivity {
             super.onPostExecute(cursor);
             if (cursor != null) {
                 pendingPiecesRV.setAdapter(new RecyclerAdapter(getApplicationContext(), cursor));
+                pendingPiecesRV.getAdapter().notifyDataSetChanged();
             }
         }
     }

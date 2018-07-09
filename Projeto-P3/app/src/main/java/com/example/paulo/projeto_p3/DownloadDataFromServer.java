@@ -8,6 +8,7 @@ import android.util.Log;
 
 import com.example.paulo.projeto_p3.db.SQLitePiecesHelper;
 import com.parse.FindCallback;
+import com.parse.Parse;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
@@ -19,22 +20,23 @@ public class DownloadDataFromServer extends IntentService {
 
     public static final String DOWNLOAD_COMPLETE =  "com.example.paulo.projeto_p3.DOWNLOAD_COMPLETE";
 
-    public static final String NEW_REPORT_AVAILABLE = "com.example.paulo.projeto_p3.DOWNLOAD_COMPLETE";
+    public static final String NEW_PIECE_AVAILABLE = "com.example.paulo.projeto_p3.NEW_PIECE_AVAILABLE";
+
+    public SQLitePiecesHelper db;
+
+    public boolean newPieces = false;
 
     public DownloadDataFromServer() {
         super("DownloadDataFromServer");
     }
 
-    SQLitePiecesHelper db;
 
     @Override
     protected void onHandleIntent(@Nullable final Intent intent) {
-
         db = SQLitePiecesHelper.getInstance(getApplicationContext());
 
+        Parse.initialize(getApplicationContext());
         final ParseUser currentUser = ParseUser.getCurrentUser();
-
-        sendBroadcast(new Intent(NEW_REPORT_AVAILABLE));
 
         ParseQuery<ParseObject> request = ParseQuery.getQuery("Produto");
         request.findInBackground(new FindCallback<ParseObject>() {
@@ -49,15 +51,26 @@ public class DownloadDataFromServer extends IntentService {
 
                         //Produto nao existe no banco, partiu adicionar e enviar notificacao se houver peças novas
                         if (item == null) {
+                            newPieces = true;
                             item = new ItemList(piece.getString("name"), piece.getObjectId(), piece.getString("description"), piece.getInt("quantity"), piece.getInt("status"));
                             db.insertPiece(item, currentUser.getUsername());
+                        } else {
+
+                            //se existe, atualizar status de acordo com o servidor
+                            if (!piece.get("status").equals(item.getStatus())) {
+                                db.updateItem(item.getId(), piece.getInt("status"));
+                            }
                         }
                     }
-
-                    //Terminou de adicionar os novos itens no banco, enviar broadcast para carregar o index
-                    LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcast(new Intent(new Intent(DOWNLOAD_COMPLETE)));
                 }
             }
         });
+
+        if (newPieces){
+            sendBroadcast(new Intent(NEW_PIECE_AVAILABLE));
+        }
+
+        //Terminou de adicionar os novos itens no banco, enviar broadcast para carregar o index
+        LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcast(new Intent(DOWNLOAD_COMPLETE));
     }
 }

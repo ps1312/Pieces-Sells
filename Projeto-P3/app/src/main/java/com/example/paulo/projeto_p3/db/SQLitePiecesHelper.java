@@ -6,7 +6,6 @@ import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.util.Log;
 
 import com.example.paulo.projeto_p3.ItemList;
 
@@ -86,6 +85,12 @@ public class SQLitePiecesHelper extends SQLiteOpenHelper {
         return query;
     }
 
+    public Cursor getHistoric() throws SQLException {
+        SQLiteDatabase readableDB = db.getReadableDatabase();
+        Cursor query = readableDB.query(DATABASE_TABLE, columns, ITEM_STATUS + " = 1", null, null, null, null);
+        return query;
+    }
+
     public long insertPiece(ItemList item, String username) {
         return insertPiece(item.getItemName(), item.getId(), item.getDescription(), item.getQuantity(), username, item.getStatus());
     }
@@ -106,10 +111,10 @@ public class SQLitePiecesHelper extends SQLiteOpenHelper {
         return writableDB.insert(DATABASE_TABLE, null, item);
     }
 
-    public boolean markAsBought(String id){
+    public boolean updateItem(String id, int status) {
         SQLiteDatabase writableDB = db.getWritableDatabase();
         ContentValues item = new ContentValues();
-        item.put(ITEM_STATUS, 1);
+        item.put(ITEM_STATUS, status);
         int hasUpdated = writableDB.update(DATABASE_TABLE, item, ITEM_ID + " = ?", new String[]{id});
         if (hasUpdated == 1) {
             return true;

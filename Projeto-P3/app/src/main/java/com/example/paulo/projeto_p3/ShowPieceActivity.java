@@ -10,9 +10,11 @@ import android.widget.TextView;
 
 import com.example.paulo.projeto_p3.db.SQLitePiecesHelper;
 import com.parse.GetCallback;
+import com.parse.Parse;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
+import com.parse.ParseUser;
 
 public class ShowPieceActivity extends AppCompatActivity {
 
@@ -55,14 +57,19 @@ public class ShowPieceActivity extends AppCompatActivity {
         //Item ainda não foi adquirido
         if (status.equals("0")) {
             itemStatusTv.setText("Em falta");
+        } else {
+            itemStatusTv.setText("Comprado");
+            buyButton.setEnabled(false);
+        }
+
+        //Somente usuario com role de "admin" pode adquirir as peças
+        if (ParseUser.getCurrentUser().get("admin").equals(true)) {
             buyButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     itemStatusTv.setText("Comprado");
-                    db.markAsBought(id);
-
+                    db.updateItem(id, 1);
                     ParseQuery<ParseObject> query = ParseQuery.getQuery("Produto");
-
                     // encontrar pelo id e marcar status como 1 (comprado)
                     query.getInBackground(id, new GetCallback<ParseObject>() {
                         public void done(ParseObject gameScore, ParseException e) {
@@ -77,7 +84,7 @@ public class ShowPieceActivity extends AppCompatActivity {
                 }
             });
         } else {
-            itemStatusTv.setText("Comprado");
+            buyButton.setText("sem permissão");
             buyButton.setEnabled(false);
         }
     }

@@ -12,34 +12,38 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
         <activity
-            android:name=".LoginActivity"
+            android:name=".ListPendingPiecesActivity"
             android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity android:name=".SignUpActivity" />
-        <activity android:name=".ListPendingPiecesActivity" />
+        <activity android:name=".LoginActivity" />
         <activity android:name=".ShowPieceActivity" />
         <activity android:name=".AddItemActivity" />
         <activity android:name=".ConfigActivity" />
 
-        <service android:name=".DownloadDataFromServer"
+        <service
+            android:name=".DownloadDataFromServer"
             android:enabled="true" />
+        <service
+            android:name=".JobDownloadService"
+            android:permission="android.permission.BIND_JOB_SERVICE" />
 
         <receiver
             android:name=".NewPieceReceiver"
             android:enabled="true"
             android:exported="true">
             <intent-filter>
-                <action android:name="com.example.paulo.projeto_p3.DOWNLOAD_COMPLETE" />
+                <action android:name="com.example.paulo.projeto_p3.NEW_PIECE_AVAILABLE" />
             </intent-filter>
         </receiver>
 
-        <!--Variaveis de ambiente para conectar com o ParseServer-->
+        <!-- Variaveis de ambiente para conectar com o ParseServer -->
         <meta-data
             android:name="com.parse.SERVER_URL"
             android:value="@string/back4app_server_url" />
@@ -49,6 +53,8 @@
         <meta-data
             android:name="com.parse.CLIENT_KEY"
             android:value="@string/b4clientKey" />
+
+        <activity android:name=".HistoricActivity"></activity>
     </application>
 
 </manifest>
