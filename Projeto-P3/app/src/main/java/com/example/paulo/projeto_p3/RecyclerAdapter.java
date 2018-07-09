@@ -46,6 +46,11 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.itemLi
         return cursor.getCount();
     }
 
+    public void changeCursor(Cursor newCursor) {
+        this.cursor = newCursor;
+        notifyDataSetChanged();
+    }
+
 
     class itemListHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 

@@ -8,4 +8,12 @@
     <item
         android:id="@+id/btn_config"
         android:title="Configurações" />
+
+    <item
+        android:id="@+id/btn_historic"
+        android:title="Historico" />
+
+    <item
+        android:id="@+id/btn_logout"
+        android:title="Logout" />
 </menu>
