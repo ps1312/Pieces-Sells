@@ -7,7 +7,7 @@ Um aplicativo de gerenciamento de peças de veículos em uma oficina. O aplicati
 O dono do negócio e os funcionários. O aplicativo será usado para acelerar e facilitar o processo de controle para compra de novas peças. Atualmente não existe um processo ou documentação definida, o aplicativo irá prover um histórico de peças compradas e disponibilizará em tempo real quais peças estão em falta.
 
 ### Existe um aplicativo similar? Se sim, como o seu será diferente?
-Como é uma demanda muito específica do estabelecimento nós não encontramos um aplicativo que atendesse as necessidades. Encontramos aplicações que prometem gerenciar mais coisas que o necessário, por exemplo:
+Como é uma demanda muito específica do estabelecimento não foi encontrado um aplicativo que atendesse as necessidades. Foram encontradas  aplicações que prometem gerenciar mais coisas que o necessário, por exemplo:
 
  1. Controle de vendas:
     - https://play.google.com/store/apps/details?id=br.thiagopacheco.vendas
@@ -25,14 +25,13 @@ Depois da autorização, a próxima tela será uma lista de todas as peças que 
 - lo-fi: https://i.imgur.com/3jJNZ3w.png
 	
 ### Quais componentes Android serão utilizados, além de classes, bibliotecas de terceiros, paradigmas de design, etc? Sua aplicação deve usar pelo menos 3 componentes básicos de Android.
-Serão usadas activities, broadcast receivers e services. Nossa aplicação consumirá dados de um servidor Back4App que será usado como o banco de dados, por enquanto o planejamento é que esses dados sejam baixados através de um service e lidos pela aplicação no formato JSON, um broadcast dinâmico será utilizado para avisar a aplicação que os dados foram baixados e que a lista pode ser exibida.
+Serão usadas activities, broadcast receivers e services.
+- A aplicação consumirá dados de um servidor Back4App através do download desses dados realizados a partir de um service, o Back4App foi utilizado por causa da funcionalidade de login "out of the box".
+- Além do Back4App a aplicação salva os dados baixados pelo service no banco SQLite do smartphone, utilizou-se o o SQLite por ele ser o mais simples e direto na hora de desenvolver os aplicativos para essa plataforma
+- Um broadcast dinâmico será utilizado para avisar a aplicação que os dados foram baixados e que a lista pode ser exibida.
 
-Também pretendemos que a aplicação faça o download dos dados mesmo que o aplicativo não esteja em primeiro plano, para isso será utilizado o JobScheduler para executar o service de tempos em tempos, o usuário poderá configurar esse tempo e quando o service terminar, se existir alguma peça nova, um broadcast estático irá mostrar uma notificação avisando ao usuário que uma nova peça foi adicionada.
+A aplicação também realiza o download dos dados mesmo que o aplicativo não esteja em primeiro plano, para isso é utilizado o JobScheduler para executar o service de tempos em tempos, o usuário pode configurar esse tempo e quando o service terminar, se existir alguma peça nova, um broadcast estático mostra uma notificação avisando ao usuário que uma nova peça foi adicionada.
 
-O login será feito junto com o Back4App, o SDK usado será: 'com.parse:parse-android:1.16.3' como está descrito em
+O login foi feito junto com o Back4App, o SDK usado é: 'com.parse:parse-android:1.16.3' como está descrito em
 https://www.back4app.com/docs/android/login-android-tutorial
-
-### Se for feito em dupla, como será dividido o trabalho?
-- Paulo Sergio: Implementar o recyclerview da main activity e os broadcast receivers. Implementar o service para download do JSON e o parse. Implementar a regra de negócio do login e sign in
-- Caio Guedes: Implementar as activities de Detalhes e Adicionar uma nova peça. Implementar o banco de dados e a tela de preferências, criar a tela de login e sign in.
 
