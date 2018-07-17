@@ -26,7 +26,7 @@ Depois da autorização, a próxima tela será uma lista de todas as peças que 
 	
 ### Quais componentes Android serão utilizados, além de classes, bibliotecas de terceiros, paradigmas de design, etc? Sua aplicação deve usar pelo menos 3 componentes básicos de Android.
 Serão usadas activities, broadcast receivers e services.
-- A aplicação consumirá dados de um servidor Back4App através do download desses dados realizados a partir de um service, o Back4App foi utilizado por causa da funcionalidade de login "out of the box".
+- A aplicação consumirá dados de um servidor Back4App fazendo o download dos dados a partir de um service, o Back4App foi utilizado por causa da funcionalidade de login "out of the box".
 - Além do Back4App a aplicação salva os dados baixados pelo service no banco SQLite do smartphone, utilizou-se o o SQLite por ele ser o mais simples e direto na hora de desenvolver os aplicativos para essa plataforma
 - Um broadcast dinâmico será utilizado para avisar a aplicação que os dados foram baixados e que a lista pode ser exibida.
 
